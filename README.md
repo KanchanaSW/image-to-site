@@ -6,9 +6,27 @@ The generated page keeps the screenshot’s industry and layout, invents a new b
 
 ## Use
 
+### Cursor chat
+
 1. Attach a website screenshot in chat.
 2. Ask to generate the site (or say “image-to-site”).
 3. The agent scaffolds or overwrites `site/` only — skill folders stay untouched.
+
+### Cursor agent (CLI)
+
+From the repo root, pass a screenshot path. `--force` lets the agent write files without prompting:
+
+```bash
+agent -p --force "Use the image-to-site skill. Generate an original Vite + React site from this screenshot: ./screenshot.png"
+```
+
+Replace `./screenshot.png` with your image. For an interactive session instead:
+
+```bash
+agent "Use the image-to-site skill. Generate an original Vite + React site from this screenshot: ./screenshot.png"
+```
+
+Then preview:
 
 ```bash
 cd site
