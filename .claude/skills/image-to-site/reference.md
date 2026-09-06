@@ -118,30 +118,28 @@ Useful query params:
 
 From each photo object use:
 
-- `src.large` or `src.large2x` as the download URL
+- `src.large` or `src.large2x` as the `<img>` / background URL (do not download)
 - `photographer`
 - `photographer_url`
 - `url` (Pexels photo page — required for attribution)
 
 Pick the first result that matches subject, orientation, and mood, and does **not** show logos, watermarks, or famous brand products. If the first page is a poor match, try a tighter query before accepting a mismatch.
 
-Download into `site/public/images/`:
+In React, use the remote URL:
 
-```bash
-curl -sSL "$IMAGE_URL" -o site/public/images/hero.jpg
+```jsx
+<img src={photo.src.large} alt="..." />
 ```
 
-Name files by slot: `hero.jpg`, `feature-1.jpg`, `portrait-1.jpg`, `product-2.jpg`.
-
-In React: `src="/images/hero.jpg"` (Vite serves `public/` at `/`).
+Never `curl` the image. Never write `site/public/images/`. Never use local `/images/...` paths.
 
 ### Fallback (no API key)
 
 1. Open or fetch `https://www.pexels.com/search/{urlencoded-query}/`
 2. Open a result that matches orientation and mood
-3. Download the free photo (large size)
+3. Copy the large image URL (`images.pexels.com/...`) — do not download the file
 4. Record photographer name and photo page URL for credits
-5. Save under `site/public/images/` as above
+5. Use that URL as `src` in React
 
 ### Attribution (required)
 
@@ -160,8 +158,8 @@ In the footer, once:
 Keep a list in code or comments:
 
 ```
-hero.jpg       Photo by Ada Lovelace  https://www.pexels.com/photo/...
-feature-1.jpg  Photo by Alan Turing   https://www.pexels.com/photo/...
+hero       Photo by Ada Lovelace  https://www.pexels.com/photo/...
+feature-1  Photo by Alan Turing   https://www.pexels.com/photo/...
 ```
 
 ### Not photographs
@@ -219,10 +217,6 @@ site/
       Hero.jsx
       ...
       Footer.jsx
-  public/
-    images/
-      hero.jpg
-      feature-1.jpg
 ```
 
 One component per inventoried section. CSS variables for color. No Tailwind unless the user asks.
@@ -232,5 +226,5 @@ One component per inventoried section. CSS variables for color. No Tailwind unle
 - Desktop and a ~390px-wide viewport
 - No screenshot brand strings in `site/src`
 - No screenshot hexes in CSS (compare to the remap table)
-- Every photo slot loads from `/images/...`
+- Every photo slot uses a remote Pexels URL (`images.pexels.com` or `src.large`), not a local file
 - Credits visible without hunting

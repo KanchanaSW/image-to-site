@@ -20,6 +20,7 @@ Read [reference.md](reference.md) before generating (inventory template, hue-shi
 - Do not crop or embed the screenshot as a site image.
 - Same industry, new brand. Nearby palette, not identical. Nearby Pexels photos, not the original pictures.
 - Icons, logos, and abstract decorations stay SVG/CSS — do not force a Pexels photo into those slots.
+- Never download photos to disk. Never write `site/public/images/`. Use the Pexels image URL as `src`.
 - Credit Pexels and each photographer. Never commit `PEXELS_API_KEY` or `.env`.
 
 ## Checklist
@@ -30,7 +31,7 @@ Copy and tick:
 - [ ] Inventory written (layout, type, colors, photo slots)
 - [ ] New brand and all-new copy (same industry, no screenshot strings)
 - [ ] Palette remapped (hue +12° to +20°, original → remapped table)
-- [ ] Pexels photo per photo slot, saved under site/public/images/
+- [ ] Pexels photo URL per photo slot (remote `src`, no local image files)
 - [ ] Vite + React scaffolded or overwritten in site/ only
 - [ ] Section components implemented with CSS variables
 - [ ] Browser-verified (desktop + mobile); credits visible
@@ -73,9 +74,9 @@ For every photo slot, search Pexels for a shot that is close in subject, orienta
 - Optionally filter by remapped color
 - Skip logos, watermarks, famous brand products
 - **Preferred:** `GET https://api.pexels.com/v1/search` with `Authorization: $PEXELS_API_KEY` (no `Bearer`). Read the key from `.env` / the environment.
-- **Fallback:** search Pexels on the web, open a photo page, download the free image
-- Save as `site/public/images/{slot}.jpg` (e.g. `hero.jpg`, `feature-1.jpg`)
-- Use local `/images/...` paths in React
+- **Fallback:** search Pexels on the web, open a matching photo page, copy the image URL
+- Put `src.large` or `src.large2x` (or the page’s image URL) on `<img>` / CSS backgrounds
+- Do not curl, save, or commit image files. Do not use `/images/...` local paths
 - Attribution: `Photo by {name} on Pexels` linking to the photo page, plus footer `Photos provided by Pexels` linking to https://www.pexels.com
 
 Full recipe: [reference.md](reference.md).
@@ -96,14 +97,14 @@ If `site/` already exists, delete its contents and recreate. Do not touch skill 
 - Nearby Google Font (same category, not the screenshot’s exact brand font)
 - Single page unless the image clearly shows multiple pages
 - Responsive layout matching the screenshot’s structure
-- `<img>` tags use downloaded Pexels files; alt text describes the **new** brand
+- `<img>` tags use Pexels image URLs; alt text describes the **new** brand
 
 ### 7. Verify
 
 Start the Vite dev server, open the app, walk the page on desktop and a mobile width. Confirm:
 
 - No original brand strings or screenshot hexes in the code
-- Every photo slot is a Pexels image (or SVG for icons)
+- Every photo slot is a remote Pexels URL (or SVG for icons), not a local file
 - Photographer + Pexels credits are visible
 - Layout still reads as the same kind of page
 

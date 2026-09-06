@@ -36,7 +36,7 @@ npm run dev
 
 ## Optional Pexels API key
 
-Without a key, the agent searches Pexels on the web and downloads free photos.
+Without a key, the agent searches Pexels on the web and uses the photo’s image URL.
 
 With a key, it uses the official search API.
 
