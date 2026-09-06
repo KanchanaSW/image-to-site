@@ -2,6 +2,15 @@
 
 Read this while generating. Do not skip the inventory, palette table, or Pexels credits.
 
+## Mode
+
+SKILL.md step 0 picks **exact** or **similar** before you use this file. There is no default.
+
+- **Exact:** paste screenshot hexes into `:root`. Skip the hue-shift algorithm. Reconstruct layout (section order, splits/grids, spacing, radius, shadows).
+- **Similar:** run the hue-shift algorithm. Reject any hex equal to a screenshot token. Keep the same *kind* of layout, not a pixel clone.
+
+Both modes still invent new brand/copy and use Pexels URLs for photo slots.
+
 ## Inventory template
 
 Fill this from the screenshot **before** scaffolding:
@@ -39,9 +48,30 @@ Photo slots:
 
 Icon, logo, and decoration slots are **not** photo slots. Rebuild those in SVG/CSS.
 
-## Hue-shift algorithm
+## Exact palette
 
-Apply the **same** hue rotation to every token so the palette stays related.
+In exact mode, write screenshot hexes onto CSS variables. Do not rotate hue.
+
+```css
+:root {
+  /* exact screenshot tokens
+     background #0B1220
+     primary    #2563EB
+     accent     #F59E0B
+  */
+  --bg: #0b1220;
+  --surface: #...;
+  --text: #...;
+  --muted: #...;
+  --primary: #2563eb;
+  --accent: #f59e0b;
+  --border: #...;
+}
+```
+
+## Hue-shift algorithm (similar mode only)
+
+Apply the **same** hue rotation to every token so the palette stays related. Skip this entire section in exact mode.
 
 1. Parse each screenshot hex as sRGB → HSL (`H` in 0–360, `S` and `L` in 0–100).
 2. Pick `deltaH` once in **+12 to +20**. Use that `deltaH` for every token.
@@ -82,7 +112,10 @@ Recalculate; do not copy these example hexes into a real site unless they happen
 
 ### Fonts
 
-Pick a **nearby** Google Font in the same category (another geometric sans, another old-style serif). Do not use the screenshot’s identifiable brand font. Load it in `index.html` and set `font-family` on `body`.
+Do not use the screenshot’s identifiable brand font. Load a Google Font in `index.html` and set `font-family` on `body`.
+
+- **Exact:** closest match to the screenshot’s type vibe (same category and similar weight/width).
+- **Similar:** a **nearby** Google Font in the same category (another geometric sans, another old-style serif).
 
 ## Pexels search recipe
 
@@ -113,7 +146,7 @@ Useful query params:
 
 - `query` (required)
 - `orientation`: `landscape` | `portrait` | `square` — match the slot
-- `color`: nearest named color or remapped hex (e.g. `#3b4de0`) so the photo sits near the new theme
+- `color`: nearest named color or palette hex (exact screenshot hex, or remapped hex in similar mode) so the photo sits near the theme
 - `per_page`: 10–15
 
 From each photo object use:
@@ -211,7 +244,7 @@ site/
   src/
     main.jsx
     App.jsx              # composes sections
-    index.css            # :root palette + remap comment
+    index.css            # :root palette + token comment (exact hexes or remap table)
     components/
       Nav.jsx
       Hero.jsx
@@ -225,6 +258,7 @@ One component per inventoried section. CSS variables for color. No Tailwind unle
 
 - Desktop and a ~390px-wide viewport
 - No screenshot brand strings in `site/src`
-- No screenshot hexes in CSS (compare to the remap table)
+- **Exact:** CSS hexes match the screenshot token table; layout reconstructs the page
+- **Similar:** no screenshot hexes in CSS (compare to the remap table)
 - Every photo slot uses a remote Pexels URL (`images.pexels.com` or `src.large`), not a local file
 - Credits visible without hunting

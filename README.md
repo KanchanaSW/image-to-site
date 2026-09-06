@@ -2,7 +2,7 @@
 
 Project skill for Cursor and Claude: attach a website screenshot and generate an original Vite + React site in `site/`.
 
-The generated page keeps the screenshot’s industry and layout, invents a new brand and copy, shifts colors to nearby hues, and fills photo slots with similar [Pexels](https://www.pexels.com) free images.
+The agent first asks whether you want an **exact** match of the image’s layout and colors, or a **similar** take (nearby colors and original content). Either way it invents a new brand and copy, and fills photo slots with similar [Pexels](https://www.pexels.com) free images.
 
 ## Use
 
@@ -10,7 +10,8 @@ The generated page keeps the screenshot’s industry and layout, invents a new b
 
 1. Attach a website screenshot in chat.
 2. Ask to generate the site (or say “image-to-site”).
-3. The agent scaffolds or overwrites `site/` only — skill folders stay untouched.
+3. Choose **exact** (same layout and colors) or **similar** (nearby colors and original content).
+4. The agent scaffolds or overwrites `site/` only — skill folders stay untouched.
 
 ### Cursor agent (CLI)
 
@@ -52,8 +53,8 @@ The Authorization header is the raw key — no `Bearer` prefix.
 ## What the skill will not copy
 
 - Visible text, logos, or trademarks from the screenshot
-- Exact hex colors
 - Crops of the screenshot itself
+- Exact hex colors, **unless you chose exact mode**
 
 Photographer and Pexels credits belong on the generated page.
 
